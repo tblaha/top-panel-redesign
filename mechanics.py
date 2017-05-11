@@ -8,49 +8,53 @@ import numpy as np
 from math import *
 from design import *
 
-def loadpercomponent(design,load):
+def loadpercomponent(design,load,failed=[]):
     nos=len(design[2]) # Number of stringers
+    brokensheets=0
+    for a in failed:
+        if a < 0:
+            brokensheets=2
+
     G   = mat[design[0]] [5]         # [Pa] Shear Mod of the sheet
     E   = mat[design[0]] [3]
+    if brokensheets == 2:
+        G=0
+        E=0
+
     t_s = sheets[design[1]]          # [m] thickness of the sheet
-    rows=[]
-    rows.append([1,0,0,-G*H*t_s]                                      + nos*[0]) # Moment contribution by sheet being in shear
-    rows.append([0,1,-E*t_s*l_tot/(H),-E*t_s*l_tot*l_tot/(H)] + nos*[0]) # Moment contribution by sheet being in compression
-    rows.append([1,1,0,0]                                                     + nos*[1]) # Sum of Forces
-    rows.append([l_tot,l_tot/2,0,0])
-    for c in design[3]:
-        rows[3] += [l_i[c]]                                                               # Sum of moments]
 
-    for d in range(nos):
-        rows.append([0,0])
+    matrix = np.zeros((nos+4,nos+4))
 
-    for e in range(nos):
-        if design[2][e] < 2:
+    matrix[0]=nos*[0] + [1,0,0,-G*H*t_s]
+    matrix[1]=nos*[0] + [0,1,0,-G*t_s*l_tot]
+    matrix[2]=nos*[1] + [1,1,0,0]
+
+    helper=[]
+    for b in design[3]:
+        helper.append(l_i[b])
+    matrix[3]= helper + [l_tot,l_tot/2,0,0]
+    for c in range(nos):
+        A_i=profiles[design[2][c]][0]*2*profiles[design[2][c]][2]
+        L_i=H
+        if c in failed:
+            E_i=0
+        elif design[2][c] < 2:
             E_i=mat[0][3]
         else:
             E_i=mat[1][3]
-        L_i=H
-        A_i=profiles[design[2][e]][0]*2*profiles[design[2][e]][2]
-        rows[4+e] += [-E_i*A_i/L_i]
-        rows[4+e] += [-E_i*A_i*(l_i[design[3][e]])/L_i]
-        for f in range(e):
-            rows[4+e] += [0]
-        rows[4+e] += [1]
-        for g in range(nos-e-1):
-            rows[4+e] += [0]
+        matrix[4+c][c]=1
+        matrix[4+c][6]=-E_i*A_i/L_i
+        matrix[4+c][7]=-E_i*A_i*l_i[design[3][c]]/L_i
 
-    matrix = np.array(rows)
-
-    augmented=[]
-    for h in range(2):
-        augmented += [0]
-    augmented += [load]
-    augmented += [load*l_tot/2]
-    for i in range(nos):
-        augmented += [0]
-
-    solution = np.linalg.solve(matrix,augmented)
-    return solution
+    augmented=np.zeros(nos+4)
+    augmented[2]=load
+    augmented[3]=load*l_tot/2
+    try:
+        solution = np.linalg.solve(matrix,augmented)
+        return solution
+    except np.linalg.linalg.LinAlgError:
+        print "All components have failed at ", load
+        return 0
 
 
 def weight(design):
