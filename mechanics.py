@@ -78,13 +78,15 @@ def weight(design):
     return M_str+M_s
 
 
-def moi(design,stringerid):
-    sid=stringerid
-    a = profiles[design[2][sid]][0]
-    t = profiles[design[2][sid]][2]
-    #Centroid location
-    Centr = ((a-t)*t*0.5*t+a*t*0.5*a)/((a-t)*t+a*t)
-    I = (1./12.)*(a-t)*(t**3.)+(a-t)*t*((Centr-0.5*t)**2)+ (1./12.)*t*(a**3.)+t*a*((0.5*a-Centr)**2)
+def moi(design):
+    lst=[]
+    for stringer_id in design[2]:
+        a = profiles[stringer_id][0]
+        t = profiles[stringer_id][2]
+        #Centroid location
+        Centr = ((a-t)*t*0.5*t+a*t*0.5*a)/((a-t)*t+a*t)
+        I = (1./12.)*(a-t)*(t**3.)+(a-t)*t*((Centr-0.5*t)**2)+ (1./12.)*t*(a**3.)+t*a*((0.5*a-Centr)**2)
+        lst.append(I)
 
-    return [Centr,I]
+    return lst # list containes ONLY moments of inertia
 

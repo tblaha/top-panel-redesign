@@ -42,7 +42,7 @@ for i in range(0,1):
     design= [1,              1,               [ 0,0,0,0 ],                          [ 0,4,8,12 ] ]
     allowable=[1500,1500,1500,1500,1000]
     weight(design)
-    moi(design,1)
+    print moi(design)
     interrivet(design,15000.)
     failed=[]
     F=0
