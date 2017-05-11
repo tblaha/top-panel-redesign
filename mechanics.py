@@ -60,7 +60,6 @@ def weight():
 
     M_str=0
     for a in design[2]:
-        print a
         L_str = H
         if a < 2:
             rho = mat[0][4]

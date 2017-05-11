@@ -3,6 +3,8 @@
 '''
 
 from mechanics import *
+from design import *
 
-print weight()
-print loadpercomponent(10000)
+for a in range(1000):
+    weight()
+    loadpercomponent(a*50)
