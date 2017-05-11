@@ -17,7 +17,7 @@ def loadpercomponent(design,load,failed=[]):
 
     G   = mat[design[0]] [5]         # [Pa] Shear Mod of the sheet
     E   = mat[design[0]] [3]
-    if brokensheets == 2:
+    if brokensheets == 2:   # Set Emod (and Gmod) to zero if component has failed. Opted not to change anything in the matrix or such
         G=0
         E=0
 
@@ -26,7 +26,7 @@ def loadpercomponent(design,load,failed=[]):
     matrix = np.zeros((nos+4,nos+4))
 
     matrix[0]=nos*[0] + [1,0,0,-G*H*t_s]
-    matrix[1]=nos*[0] + [0,1,0,-G*t_s*l_tot]
+    matrix[1]=nos*[0] + [0,1,-E*t_s*l_tot/H,-E*t_s*l_tot**2/H]
     matrix[2]=nos*[1] + [1,1,0,0]
 
     helper=[]
@@ -36,7 +36,7 @@ def loadpercomponent(design,load,failed=[]):
     for c in range(nos):
         A_i=profiles[design[2][c]][0]*2*profiles[design[2][c]][2]
         L_i=H
-        if c in failed:
+        if c in failed: # Set Emod to zero if component has failed. Opted not to change anything in the matrix or such
             E_i=0
         elif design[2][c] < 2:
             E_i=mat[0][3]
@@ -49,11 +49,12 @@ def loadpercomponent(design,load,failed=[]):
     augmented=np.zeros(nos+4)
     augmented[2]=load
     augmented[3]=load*l_tot/2
+
     try:
         solution = np.linalg.solve(matrix,augmented)
         return solution
     except np.linalg.linalg.LinAlgError:
-        print "All components have failed at ", load
+        #print "All components have failed at ", load
         return 0
 
 
