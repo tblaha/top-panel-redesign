@@ -1,5 +1,5 @@
 '''
-@author: tblaha
+@author: tblaha,dayazyan
 @description: In here the mechanics function are defined that can be used in the main program to find the loads carried by each individual component and the overall displacement etc.
               A precise description of the solution vector is yet to come
               This requires the design.py script with all the definitions!
@@ -8,7 +8,8 @@ import numpy as np
 from math import *
 from design import *
 
-def loadpercomponent(load):
+def loadpercomponent(design,load):
+    nos=len(design[2]) # Number of stringers
     G   = mat[design[0]] [5]         # [Pa] Shear Mod of the sheet
     E   = mat[design[0]] [3]
     t_s = sheets[design[1]]          # [m] thickness of the sheet
@@ -52,7 +53,7 @@ def loadpercomponent(load):
     return solution
 
 
-def weight():
+def weight(design):
     G   = mat[design[0]] [5]         # [Pa] Shear Mod of the sheet
     E   = mat[design[0]] [3]
     t_s = sheets[design[1]]          # [m] thickness of the sheet
@@ -73,7 +74,7 @@ def weight():
     return M_str+M_s
 
 
-def moi(stringerid):
+def moi(design,stringerid):
     sid=stringerid
     a = profiles[design[2][sid]][0]
     t = profiles[design[2][sid]][2]

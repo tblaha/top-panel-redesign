@@ -39,11 +39,3 @@ profiles=[
     [0.02,0.02,0.002]
           ]
 
-
-######################
-# Design Vector
-######################
-#design=[sheet material, sheet thickness, [stringer 1 type,stringer 2 type...], [stringer 1 position, stringer 2 position...]]
-design= [1,              1,               [ 0,0,0,0 ],                          [ 0,3,6,9 ] ]
-
-nos=len(design[2]) # Number of stringers
