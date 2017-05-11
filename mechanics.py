@@ -6,7 +6,7 @@
 '''
 import numpy as np
 from math import *
-from design import *
+from constants import *
 
 def loadpercomponent(design,load,failed=[]):
     nos=len(design[2]) # Number of stringers
@@ -43,12 +43,14 @@ def loadpercomponent(design,load,failed=[]):
         else:
             E_i=mat[1][3]
         matrix[4+c][c]=1
-        matrix[4+c][6]=-E_i*A_i/L_i
-        matrix[4+c][7]=-E_i*A_i*l_i[design[3][c]]/L_i
+        matrix[4+c][-2]=-E_i*A_i/L_i
+        matrix[4+c][-1]=-E_i*A_i*l_i[design[3][c]]/L_i
 
     augmented=np.zeros(nos+4)
     augmented[2]=load
     augmented[3]=load*l_tot/2
+    
+    #print matrix,augmented
 
     try:
         solution = np.linalg.solve(matrix,augmented)
