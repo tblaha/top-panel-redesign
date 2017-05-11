@@ -5,6 +5,7 @@
               This requires the design.py script with all the definitions!
 '''
 import numpy as np
+from math import *
 from design import *
 
 def loadpercomponent(load):
@@ -72,5 +73,23 @@ def weight():
     return M_str+M_s
 
 
+def moment of inertia():
 
+    a = float(input("Enter height or width:"))
+
+    t = float(input("Enter thickness:"))
+          
+
+
+
+
+    #Centroid location
+
+    Centr = ((a-t)*t*0.5*t+a*t*0.5*a)/((a-t)*t+a*t)
+
+    I = (1./12.)*(a-t)*(t**3.)+(a-t)*t*((Centr-0.5*t)**2)+ (1./12.)*t*(a**3.)+t*a*((0.5*a-Centr)**2)
+
+
+    return [Centr,I]
+    
 
