@@ -1,10 +1,9 @@
-import math
 from math import sqrt
-print'Enter value of compression force under which inter-rivet buckling occurs(in Newtons)'
-from Mechanics import*
-from design import*
+from Mechanics import *
+from design import *
 import numpy as np
-F = float(input('Enter value of compression force:'))
+
+F=1000
 
 #----------------------MAIN PROGRAM-------------------
 

@@ -51,6 +51,7 @@ def loadpercomponent(load):
     solution = np.linalg.solve(matrix,augmented)
     return solution
 
+
 def weight():
     G   = mat[design[0]] [5]         # [Pa] Shear Mod of the sheet
     E   = mat[design[0]] [3]
@@ -72,23 +73,13 @@ def weight():
     return M_str+M_s
 
 
-def moment of inertia():
-
-    a = float(input("Enter height or width:"))
-
-    t = float(input("Enter thickness:"))
-          
-
-
-
-
+def moi(stringerid):
+    sid=stringerid
+    a = profiles[design[2][sid]][0]
+    t = profiles[design[2][sid]][2]
     #Centroid location
-
     Centr = ((a-t)*t*0.5*t+a*t*0.5*a)/((a-t)*t+a*t)
-
     I = (1./12.)*(a-t)*(t**3.)+(a-t)*t*((Centr-0.5*t)**2)+ (1./12.)*t*(a**3.)+t*a*((0.5*a-Centr)**2)
 
-
     return [Centr,I]
-    
 
