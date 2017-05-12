@@ -92,4 +92,24 @@ def moi(design):
         lst.append(I)
 
     return lst # list containes ONLY moments of inertia
+  
+  
+  
+# Calculating compression buckling force  
+  
+  #needed:
+#t (thickness of sheet)
+#b (stringer pitch)
+#E (young's modulus of sheet)
+
+
+def compbuck(t, b, E):
+    Kc = 3.6
+    
+    stress = Kc * E * ((t/b)**2)
+
+    Fcb = stress * (t * 0.4)   #0.4 is in meters
+    
+
+    return Fcb
 
