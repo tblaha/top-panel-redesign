@@ -29,3 +29,19 @@ def column(design):
         i += 1
     return columncr
 
+
+# Calculating compression buckling force  
+#   needed:
+# design vector to obtain thickness, stiffness and stringer pitch
+def compbuck(design):
+    Kc = 3.6 ## assumed constant
+    
+    E=mat[design[0]][3]
+    t=sheets[design[1]]
+    b=l_tot/(len(design[2])-1) ## avg spacing between stringers
+    
+    
+    stress = Kc * E * ((t/b)**2) ## assumed uniform over width
+    
+    Fcb = stress * (t * l_tot)   #l_tot is width
+    return Fcb

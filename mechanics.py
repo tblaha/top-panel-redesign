@@ -59,7 +59,6 @@ def loadpercomponent(design,load,failed=[]):
         #print "All components have failed at ", load
         return 0
 
-
 def weight(design):
     G   = mat[design[0]] [5]         # [Pa] Shear Mod of the sheet
     E   = mat[design[0]] [3]
@@ -80,7 +79,6 @@ def weight(design):
 
     return M_str+M_s
 
-
 def moi(design):
     lst=[]
     for stringer_id in design[2]:
@@ -92,24 +90,43 @@ def moi(design):
         lst.append(I)
 
     return lst # list containes ONLY moments of inertia
-  
-  
-  
+
+def interrivet(design,load):
+    a=0.9
+    c=2.1
+    Es = mat[design[0]][3]
+    ts = sheets[design[1]]          # [m] thickness of the sheet
+    sig = load/(ts*l_tot)
+    pitch=ts * sqrt ((a*c*Es)/sig)
+    return pitch
+
+def column(design):
+    mois=moi(design)
+    columncr=[]
+    i=0
+    for stringer in design[2]: # for every stringer present in the current design
+        if stringer < 2: # steel
+            E=mat[0][3] # emod
+        else:            # al
+            E=mat[1][3] # emod
+        columncr.append(4*(pi**2)*E*mois[i]/(H*H)) # FACTOR?
+        i += 1
+    return columncr
+
 # Calculating compression buckling force  
-  
-  #needed:
-#t (thickness of sheet)
-#b (stringer pitch)
-#E (young's modulus of sheet)
-
-
-def compbuck(t, b, E):
-    Kc = 3.6
+#   needed:
+# design vector to obtain thickness, stiffness and stringer pitch
+def compbuck(design):
+    Kc = 3.6 ## assumed constant
     
-    stress = Kc * E * ((t/b)**2)
-
-    Fcb = stress * (t * 0.4)   #0.4 is in meters
+    E=mat[design[0]][3]
+    t=sheets[design[1]]
+    b=l_tot/(len(design[2])-1) ## avg spacing between stringers
     
-
+    
+    stress = Kc * E * ((t/b)**2) ## assumed uniform over width
+    
+    Fcb = stress * (t * l_tot)   #l_tot is width
     return Fcb
+
 
