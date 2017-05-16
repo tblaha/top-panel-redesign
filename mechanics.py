@@ -109,7 +109,7 @@ def column(design):
             E=mat[0][3] # emod
         else:            # al
             E=mat[1][3] # emod
-        columncr.append(4*(pi**2)*E*mois[i]/(H*H)) # FACTOR?
+        columncr.append((pi**2)*E*mois[i]/(H*H)) # FACTOR?
         i += 1
     return columncr
 
