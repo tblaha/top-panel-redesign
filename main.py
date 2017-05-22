@@ -69,8 +69,8 @@ def progfail(design):
     ###########################################
     # when analysis is done and requirements achieved, return the configuration
     ###########################################
-    if bucklingload > 14000 and failureload > 28000 and panelweight < 1:
-        return sequence + [design[0],design[1],design[2],design[3]] + [bucklingload,failureload,panelweight,ir]
+    #if bucklingload > 14000 and failureload > 28000 and panelweight < 1:
+    return sequence + [design[0],design[1],design[2],design[3]] + [bucklingload,failureload,panelweight,ir]
 
 #outfile = []
 #i=0
@@ -93,9 +93,9 @@ def progfail(design):
                     #print '{0}/{1}'.format(i,18576)
                 #i += 1
 
-#design = [1,0,[2,2,2,2,2,2],strpitch[4]] # orig design
+design = [1,0,[5,5,5,5,5,5],strpitch[4]] # orig design
 #design = [0,0,[0,0,0],strpitch[1]]
-#print progfail(design)
+print progfail(design)
 
 #outfile.sort(key=lambda x: x[-2]) # sort by weight
 #with open('MDO.txt','a') as f:
@@ -104,4 +104,4 @@ def progfail(design):
 #        f.write(str(line) + '\n')
     
     
-    
+    [[20900, -1], [49400, 2], [38500, 0], [18600, 1], [8500, 3], [4000, 4], 1, 0, [5, 5, 5, 5, 5, 5], [0, 3, 5, 7, 9, 12], 20900, 49400, 1.112, 0.04322346029646401]
